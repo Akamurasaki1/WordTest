@@ -170,7 +170,7 @@
                     const correctRaw = item.a.trim();
 
                     // "/" の最初の出現で分割し、左右どちらかが一致すれば正解とする（大文字小文字無視）
-                    const slashIdx = correctRaw.indexOf("/");
+                    const slashIdx = correctRaw.indexOf(" / ");
                     const choices = slashIdx >= 0
                         ? [
                             correctRaw.slice(0, slashIdx).trim().toLowerCase(),
