@@ -167,9 +167,20 @@
                 let output = "";
                 questions.forEach((item, i) => {
                     const userAns = document.getElementById(`ans${i}`).value.trim();
-                    const correct = item.a.trim();
-                    if (userAns === correct) score++;
-                    output += `${i + 1}. ${item.q} → あなたの答え: ${userAns || "（未入力）"} ／ 正解: ${correct}<br>`;
+                    const correctRaw = item.a.trim();
+
+                    // "/" の最初の出現で分割し、左右どちらかが一致すれば正解とする（大文字小文字無視）
+                    const slashIdx = correctRaw.indexOf("/");
+                    const choices = slashIdx >= 0
+                        ? [
+                            correctRaw.slice(0, slashIdx).trim().toLowerCase(),
+                            correctRaw.slice(slashIdx + 1).trim().toLowerCase()
+                        ]
+                        : [correctRaw.toLowerCase()];
+
+                    const isCorrect = userAns !== "" && choices.some(c => c === userAns.toLowerCase());
+                    if (isCorrect) score++;
+                    output += `${i + 1}. ${item.q} → あなたの答え: ${userAns || "（未入力）"} ／ 正解: ${correctRaw}<br>`;
                 });
                 output += `<br>正解数：${score} / ${questions.length}`;
                 document.getElementById("result").innerHTML = output;
