@@ -146,7 +146,7 @@
                 { q: "TCP/IP", a: "TCP/IPプロトコル / Transmission Control Protocol/Internet Protocol" },
                 { q: "UDP", a: "ユーザー・データグラム・プロトコル / User Datagram Protocol" },
                 { q: "VC", a: "バーチャル・サーキット / Virtual Circuit" },
-                { q: "VM", a: "仮想計算機 / Virtual Machine" },
+                { q: "VM", a: "仮想計算機 / Virtual Machine / 仮想マシン" },
                 { q: "VTAM", a: "仮想記憶通信アクセス方式 / Virtual Telecommunications Access Method" },
                 { q: "WAN", a: "広域ネットワーク / Wide Area Network" }
 
@@ -169,14 +169,11 @@
                     const userAns = document.getElementById(`ans${i}`).value.trim();
                     const correctRaw = item.a.trim();
 
-                    // "/" の最初の出現で分割し、左右どちらかが一致すれば正解とする（大文字小文字無視）
-                    const slashIdx = correctRaw.indexOf(" / ");
-                    const choices = slashIdx >= 0
-                        ? [
-                            correctRaw.slice(0, slashIdx).trim().toLowerCase(),
-                            correctRaw.slice(slashIdx + 1).trim().toLowerCase()
-                        ]
-                        : [correctRaw.toLowerCase()];
+                    // "/" で分割して、空でない各要素を正解候補とする（大文字小文字無視）
+                    const choices = correctRaw
+                        .split(" / ")
+                        .map(s => s.trim().toLowerCase())
+                        .filter(Boolean);
 
                     const isCorrect = userAns !== "" && choices.some(c => c === userAns.toLowerCase());
                     if (isCorrect) score++;
